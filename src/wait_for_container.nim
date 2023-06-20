@@ -114,6 +114,7 @@ when isMainModule:
 
   if pid == 0:
     check_error("Unable to duplicate stdout"): dup2(fd[1], 1) == -1
+    check_error("Unable to duplicate stderr"): dup2(fd[1], 2) == -1
     check_error("Unable to close pipe (read)"): close(fd[0]) != 0
     check_error("Unable to close pipe (write)"): close(fd[1]) != 0
 
