@@ -34,7 +34,7 @@ proc wait_for_output(fd: cint, target: string, timeout: int) =
       wait_time += 1
       if wait_time > timeout:
         writeError "timed out"
-        quit(1)
+        quit(2)
       continue
 
     let bytesRead = read(fd, addr(buffer[0]), bufferSize)
