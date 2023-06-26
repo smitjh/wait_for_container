@@ -20,6 +20,7 @@ proc wait_for_output(fd: cint, target: string, timeout: int) =
     success = true
     current_index = 0
     target_length = len(target)
+    buffer: array[bufferSize, char]    
 
   while true:
     FD_ZERO(read_set)
@@ -36,7 +37,6 @@ proc wait_for_output(fd: cint, target: string, timeout: int) =
         quit(1)
       continue
 
-    var buffer: array[bufferSize, char]
     let bytesRead = read(fd, addr(buffer[0]), bufferSize)
 
     if bytesRead > 0:
