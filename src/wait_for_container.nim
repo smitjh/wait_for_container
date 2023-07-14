@@ -1,6 +1,7 @@
 import std/posix, std/parseopt, std/strutils
 
 const bufferSize = 4096
+const VERSION = "0.1.0"
 
 template check_error(msg: string, f: untyped) =
   if f:
@@ -20,7 +21,7 @@ proc wait_for_output(fd: cint, target: string, timeout: int) =
     success = true
     current_index = 0
     target_length = len(target)
-    buffer: array[bufferSize, char]    
+    buffer: array[bufferSize, char]
 
   while true:
     FD_ZERO(read_set)
@@ -37,7 +38,7 @@ proc wait_for_output(fd: cint, target: string, timeout: int) =
         quit(2)
       continue
 
-    let bytesRead = read(fd, addr(buffer[0]), bufferSize)
+    let bytesRead = read(fd, addr(buffer[0]), bufferSize - 1)
 
     if bytesRead > 0:
       let data = buffer[0..bytesRead].join("")
@@ -65,6 +66,7 @@ proc showHelp() =
   echo "--docker         Use the docker container runtime"
   echo "--timeout=T      Specify how long to wait before timing out in seconds (default 60 seconds)"
   echo "--container=NAME Specify the container name or id"
+  echo "--version        Show wait_for_container version"
   echo ""
   echo "The target is the string to wait for. Note this must be quoted:"
   echo "e.g."
@@ -94,6 +96,9 @@ when isMainModule:
         continue
       if p.key == "timeout":
         timeout = parseInt(p.val.strip)
+      if p.key == "version":
+        echo VERSION
+        quit(0)
     of cmdArgument:
       target = p.key
 
