@@ -16,6 +16,11 @@ Small utility to wait for specific string to appear in a container's logs. Suppo
     e.g.
     $ wait_for_container --container=test "stop when you see this"
 
+
+## Build
+
+This requires nim to be installed. Build with  `nimble build` or `nimble build -d:release`.
+
 ## Use case
 
 The main use case here is to wait for a particular container to initialise before continuing when running a script: 
